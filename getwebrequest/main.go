@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
 func main() {
-	PerformGetRequest()
-	PerformPostRequest()
+	// PerformGetRequest()
+	// PerformPostRequest()
+	PerformOnFormData()
 }
 
 func PerformGetRequest() {
@@ -45,4 +47,19 @@ func PerformPostRequest() {
 	constent, _ := io.ReadAll(response.Body)
 
 	fmt.Println(string(constent))
+}
+func PerformOnFormData(){
+	const myurl = "http://localhost:3000/formdata"
+	data := url.Values{}
+	data.Add("FirstName","Jason")
+	data.Add("Age","22")
+	data.Add("LastName","Momoya")
+	data.Add("email","jason@12")
+	res,err := http.PostForm(myurl, data)
+	defer res.Body.Close()
+	if err!=nil{
+		panic(err)
+	}
+	content, _ := io.ReadAll(res.Body)
+	fmt.Println(string(content))
 }
